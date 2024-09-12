@@ -1,0 +1,11 @@
+groups:
+  - name: hight404
+    rules:
+      - alert: HighRequest404Error
+        expr: flask_http_request_total{status="404"} > 5
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Hight amount of 404"
+          description: "Flask app has more then five 404code in the past minute"

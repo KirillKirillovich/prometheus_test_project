@@ -10,8 +10,7 @@ endpoints = [
 ]
 
 base_url = 'http://web_app:5000' 
-
-num_requests = 10
+error_endpoint = '/4x-code'
 
 def make_request():
     endpoint = random.choice(endpoints)
@@ -22,10 +21,23 @@ def make_request():
     except requests.RequestException as e:
         print(f'Error making request to {url}: {e}')
 
+def make_errors():
+    endpoint = error_endpoint
+    url = f'{base_url}{endpoint}'
+    try:
+        response = requests.get(url)
+        print(f'Request to {url} - Status Code: {response.status_code}')
+    except requests.RequestException as e:
+        print(f'Error making request to {url}: {e}')
+
 
 if __name__ == '__main__':
-    for _ in range(num_requests // 2):
+    for _ in range(10):
+        make_errors()
+        time.sleep(5)
+
+    for _ in range(10):
         make_request()
-        time.sleep(30)
+        time.sleep(10)
         make_request()
-        time.sleep(30)
+        time.sleep(10)

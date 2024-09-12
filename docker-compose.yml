@@ -18,9 +18,12 @@ services:
   prometheus:
     image: prom/prometheus:latest
     volumes:
-      - ./configs/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
+      - ./configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./configs/prometheus/alert_rules.yml:/etc/prometheus/alert_rules.yml
     ports:
       - "9090:9090"
+    depends_on:
+      - alertmanager
 
   grafana:
     image: grafana/grafana:latest
@@ -30,5 +33,12 @@ services:
       - prometheus
     volumes:
       - ./configs/grafana/provisioning:/etc/grafana/provisioning
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    volumes:
+      - ./configs/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    ports:
+      - "9093:9093"
 
 
